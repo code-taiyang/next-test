@@ -8,9 +8,13 @@ import matter from "gray-matter";
 // 根目录 + posts博客文件目录
 const postDir = path.join(process.cwd(), "public/posts");
 
-module.exports.getSortedPostData = function () {
+export const getSortedPostData = function () {
   const fileNames = fs.readdirSync(postDir);
-  const posts: any[] = [];
+  const posts: {
+    id: string;
+    [key: string]: any;
+  }[] = [];
+  
   try {
     fileNames.forEach((file) => {
       const reg = /\.md$/;
