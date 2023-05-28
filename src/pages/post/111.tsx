@@ -1,5 +1,4 @@
 import Layout from "@/components/layout";
-import matter from "gray-matter";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getSortedPostData } from "../../../lib/posts";
 import utilStyles from "@/styles/utils.module.css";

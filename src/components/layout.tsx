@@ -5,11 +5,12 @@ import Link from 'next/link';
 import Navigator from "./navigator";
 import styles from './layout.module.css';
 import utilStyles from '../styles/utils.module.css';
+import { PropsWithChildren } from 'react';
 
 const name = 'Your Name';
 export const siteTitle = 'Next.js Sample Website';
 
-export default function Layout({ title = "next app", children, home = false }) {
+export default function Layout({ title = "next app", children, home = false }: {title?: string; home?: boolean; children: any}) {
   return (
     <div className={styles.container}>
       <Head>
