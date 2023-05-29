@@ -1,7 +1,8 @@
 import Layout from "@/components/layout";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import { getSortedPostData } from "../../../lib/posts";
 import utilStyles from "@/styles/utils.module.css";
+import { useContext, useRef } from "react";
 // import "tailwindcss/tailwind.css"
 
 interface PostsData {
@@ -14,9 +15,16 @@ interface PostsData {
   }[];
 }
 
-export const getStaticProps: GetStaticProps<{ data: PostsData }> = async () => {
-  const postsData = getSortedPostData();
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: false
+  };
+}
+
+export const getStaticProps: GetStaticProps<{data: PostsData}> = async ({params}) => {
+  const postsData = getSortedPostData();
   const data: PostsData = {
     blogs: postsData,
     count: postsData.length,
