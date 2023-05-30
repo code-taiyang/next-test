@@ -1,31 +1,36 @@
 import Layout from "@/components/layout";
-import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import { getSortedPostData } from "../../../lib/posts";
+import type { GetStaticPaths, GetStaticPathsResult, GetStaticProps, InferGetStaticPropsType } from "next";
+import { getPostDataProcessor, PostData } from "../../../lib/posts";
 import utilStyles from "@/styles/utils.module.css";
-import { useContext, useRef } from "react";
 // import "tailwindcss/tailwind.css"
 
-interface PostsData {
+interface BlogData {
   count: number;
-  blogs: {
-    [key: string]: any;
-    id: string;
-    name?: string;
-    date?: string;
-  }[];
+  blogs: PostData[];
 }
 
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async (context) => {
+  const processor = getPostDataProcessor();
+  const postsData = processor.getSortedPostData();
+  
+  const paths = [].map(() => ({
+    params: {
+      id: ""
+    },
+    
+  }))
+
   return {
-    paths: [],
+    paths: paths,
     fallback: false
   };
 }
 
-export const getStaticProps: GetStaticProps<{data: PostsData}> = async ({params}) => {
-  const postsData = getSortedPostData();
-  const data: PostsData = {
+export const getStaticProps: GetStaticProps<{data: BlogData}> = async ({params}) => {
+  const processor = getPostDataProcessor();
+  const postsData = processor.getSortedPostData();
+  const data: BlogData = {
     blogs: postsData,
     count: postsData.length,
   };
@@ -46,13 +51,13 @@ export default function Post({
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px} bg-sky-400`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {data.blogs.map(({ id, date, title, name }) => (
+          {data.blogs.map(({ id, modifyTime, title, author }) => (
             <li className={utilStyles.listItem} key={id}>
               《{title}》
               <br />
-              作者：{name}
+              作者：{author}
               <br />
-              日期：{date}
+              日期：{modifyTime}
             </li>
           ))}
         </ul>
