@@ -10,9 +10,13 @@ const routes = [
     name: "about",
   },
   {
-    path: "/post/111",
-    name: "post1",
+    path: "/post/helloworld",
+    name: "helloworld"
   },
+  {
+    path: "/post/dynamic-route",
+    name: "dynamic-route"
+  }
 ];
 
 export default function Navigator() {
