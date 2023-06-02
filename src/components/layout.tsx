@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Navigator from "./navigator";
+import Navigator, { RouteInfo } from "./navigator";
 import styles from './layout.module.css';
 import utilStyles from '../styles/utils.module.css';
 import { PropsWithChildren } from 'react';
@@ -10,7 +10,7 @@ import { PropsWithChildren } from 'react';
 const name = 'Your Name';
 export const siteTitle = 'Next.js Sample Website';
 
-export default function Layout({ title = "next app", children, home = false }: {title?: string; home?: boolean; children: any}) {
+export default function Layout({ title = "next app", children, home = false, extData = {} }: {title?: string; home?: boolean; children: any; extData?: {routes?: RouteInfo[]}}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -41,7 +41,7 @@ export default function Layout({ title = "next app", children, home = false }: {
               alt=""
             />
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
-            <Navigator></Navigator>
+            <Navigator routes={extData.routes || []}></Navigator>
           </>
         ) : (
           <>

@@ -21,8 +21,7 @@ export const getStaticProps: GetStaticProps<{data: PostData | null}> = async ({p
     };
   }
 
-  console.log(params.id);
-  const postsData = getPostDataById(params.id);
+  const postsData = await getPostDataById(params.id);
 
   return {
     props: { data: postsData },
@@ -40,7 +39,8 @@ export default function Post({
             <h1>《{data.title}》</h1>
             <p>作者：{data.author}</p>
             <p>更新时间: {data.modifyTime}</p>
-            <p>{data.content}</p>
+            <br />
+            <div dangerouslySetInnerHTML={{ __html: data.htmlContent }} />
           </section>)
       }
     </Layout>

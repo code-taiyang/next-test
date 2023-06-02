@@ -1,25 +1,11 @@
 import Link from "next/link";
 
-const routes = [
-  {
-    path: "/",
-    name: "home",
-  },
-  {
-    path: "/about",
-    name: "about",
-  },
-  {
-    path: "/post/helloworld",
-    name: "helloworld"
-  },
-  {
-    path: "/post/dynamic-route",
-    name: "dynamic-route"
-  }
-];
+export interface RouteInfo {
+  path: string;
+  name: string;
+}
 
-export default function Navigator() {
+export default function Navigator({routes}: {routes: RouteInfo[]}) {
   return (
     <ul>
       {routes.map((r) => (

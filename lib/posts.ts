@@ -2,13 +2,15 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { isKebabCase } from "@/utils/validate";
+import { remark } from 'remark';
+import html from 'remark-html';
 
 // 根目录 + posts博客文件目录
 const postDir = path.join(process.cwd(), "public/posts");
 
 export type PostData = {
   id: string;
-  content: string;
+  htmlContent: string;
   author?: string;
   createTime?: string;
   modifyTime?: string;
@@ -38,7 +40,7 @@ export function getPostList (): string[] {
   return res;
 }
 
-export function getPostDataById(id: string): PostData | null {
+export async function getPostDataById(id: string): Promise<PostData | null> {
   if(!isKebabCase(id)) {
     console.warn(`${id} :>> 文件命名没有严格遵守kebab-case`);
     return null;
@@ -55,10 +57,11 @@ export function getPostDataById(id: string): PostData | null {
   try {
     const fileContents = fs.readFileSync(fullPath, "utf-8");
     const matterRes = matter(fileContents);
+    const htmlContent = (await remark().use(html).process(matterRes.content)).toString();
     const data = {
       id,
       ...matterRes.data,
-      content: matterRes.content
+      htmlContent: htmlContent
     }
 
     return data;
