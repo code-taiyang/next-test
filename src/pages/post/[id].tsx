@@ -2,7 +2,11 @@ import Layout from "@/components/layout";
 import type { GetStaticPaths, GetStaticPathsResult, GetStaticProps, InferGetStaticPropsType } from "next";
 import { getPostDataById, getPostList, PostData } from "../../../lib/posts";
 import utilStyles from "@/styles/utils.module.css";
+import Error from "../_error";
+// import Error from "next/error";
+
 // import "tailwindcss/tailwind.css"
+
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   const postList = getPostList();
@@ -43,6 +47,7 @@ export default function Post({
             <div dangerouslySetInnerHTML={{ __html: data.htmlContent }} />
           </section>)
       }
+      <Error statusCode={999} title="阿巴巴"></Error>
     </Layout>
   );
 }
