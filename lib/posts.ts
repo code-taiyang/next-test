@@ -6,7 +6,7 @@ import { remark } from 'remark';
 import html from 'remark-html';
 
 // 根目录 + posts博客文件目录
-const postDir = path.join(process.cwd(), "public/posts");
+const postDir = path.join(process.cwd(), "../DB/posts");
 
 export type PostData = {
   id: string;
@@ -53,6 +53,8 @@ export async function getPostDataById(id: string): Promise<PostData | null> {
     console.error("不存在路径 :>> ${fullPath}");
     return null;
   }
+
+  console.log("请求文件 :>>>>>> ", id);
 
   try {
     const fileContents = fs.readFileSync(fullPath, "utf-8");

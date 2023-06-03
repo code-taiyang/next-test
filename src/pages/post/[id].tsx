@@ -2,19 +2,19 @@ import Layout from "@/components/layout";
 import type { GetStaticPaths, GetStaticPathsResult, GetStaticProps, InferGetStaticPropsType } from "next";
 import { getPostDataById, getPostList, PostData } from "../../../lib/posts";
 import utilStyles from "@/styles/utils.module.css";
-import Error from "../_error";
-// import Error from "next/error";
+import { useRouter } from "next/router";
 
 // import "tailwindcss/tailwind.css"
 
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   const postList = getPostList();
-  const paths = postList.map((id) => ({ params: {id} }));
+  // const paths = postList.map((id) => ({ params: {id} }));
+  const paths = postList.slice(0, 1).map((id) => ({ params: {id} }));
 
   return {
     paths: paths,
-    fallback: false
+    fallback: "blocking"
   };
 }
 
@@ -35,6 +35,12 @@ export const getStaticProps: GetStaticProps<{data: PostData | null}> = async ({p
 export default function Post({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const route = useRouter();
+
+  if(route.isFallback) {
+    return <h1>loading....</h1>
+  }
+
   return (
     <Layout title={"post"}>
       {
@@ -47,7 +53,6 @@ export default function Post({
             <div dangerouslySetInnerHTML={{ __html: data.htmlContent }} />
           </section>)
       }
-      <Error statusCode={999} title="阿巴巴"></Error>
     </Layout>
   );
 }
