@@ -8,13 +8,14 @@ import { useRouter } from "next/router";
 
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
+  console.log('SKIP_BUILD_DYNAMIC_ROUTE :>> ', process.env.SKIP_BUILD_DYNAMIC_ROUTE);
   const postList = getPostList();
   // const paths = postList.map((id) => ({ params: {id} }));
   const paths = postList.slice(0, 1).map((id) => ({ params: {id} }));
 
   return {
     paths: paths,
-    fallback: "blocking"
+    fallback: true
   };
 }
 
@@ -32,9 +33,8 @@ export const getStaticProps: GetStaticProps<{data: PostData | null}> = async ({p
   };
 };
 
-export default function Post({
-  data,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Post(props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { data } = props;
   const route = useRouter();
 
   if(route.isFallback) {
