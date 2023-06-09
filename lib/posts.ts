@@ -1,20 +1,44 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { isKebabCase } from "@/utils/validate";
+import { isFullNumber, isKebabCase } from "@/utils/validate";
 import { remark } from 'remark';
 import html from 'remark-html';
 
 // 根目录 + posts博客文件目录
 const postDir = path.join(process.cwd(), "../DB/posts");
 
-export type PostData = {
-  id: string;
-  htmlContent: string;
+interface PostMetaData {
   author?: string;
   createTime?: string;
-  modifyTime?: string;
+  updateTime?: string;
   title?: string;
+}
+
+export type PostData = PostMetaData & {
+  id: string;
+  htmlContent: string;
+}
+
+/**
+ * 元数据校验
+ * @param data 
+ * @returns 
+ */
+const metaDataValidate = (data: PostMetaData): boolean => {
+  let isValid = true;
+
+  if(data.createTime && !isFullNumber(data.createTime)) {
+    isValid = false;
+    console.warn(`createTime :>> ${data.createTime}。需要时间戳格式`);
+  }
+  
+  if(data.updateTime && !isFullNumber(data.updateTime)) {
+    isValid = false;
+    console.warn(`updateTime :>> ${data.createTime}。。需要时间戳格式`);
+  }
+
+  return isValid;
 }
 
 export function getPostList (): string[] {
@@ -49,16 +73,20 @@ export async function getPostDataById(id: string): Promise<PostData | null> {
   const fullPath = path.join(postDir, `${id}.md`);
   const isExist = fs.existsSync(fullPath);
   
-  if(!isExist) {
-    console.error("不存在路径 :>> ${fullPath}");
-    return null;
-  }
-
   console.log("请求文件 :>>>>>> ", id);
 
   try {
+    if(!isExist) {
+      throw new Error(`不存在路径 :>> ${fullPath}`);
+    }
+
     const fileContents = fs.readFileSync(fullPath, "utf-8");
     const matterRes = matter(fileContents);
+
+    if(!metaDataValidate(matterRes.data)) {
+      throw new Error("元数据格式错误");
+    }
+
     const htmlContent = (await remark().use(html).process(matterRes.content)).toString();
     const data = {
       id,

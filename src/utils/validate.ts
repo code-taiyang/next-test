@@ -12,3 +12,15 @@ export function isKebabCase(name: string): boolean {
 
   return reg.test(name);
 }
+
+/**
+ * 判断是否是纯数字
+ */
+const regFullNumber = /[0-9]+/g;
+export function isFullNumber(v: string | number): boolean {
+  if(typeof v === "number") {
+    return true;
+  }
+
+  return regFullNumber.test(v);
+}

@@ -48,7 +48,7 @@ export default function Post(props: InferGetStaticPropsType<typeof getStaticProp
         : (<section>
             <h1>《{data.title}》</h1>
             <p>作者：{data.author}</p>
-            <p>更新时间: {data.modifyTime}</p>
+            <p>更新时间: {data.updateTime}</p>
             <br />
             <div dangerouslySetInnerHTML={{ __html: data.htmlContent }} />
           </section>)
