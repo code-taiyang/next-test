@@ -94,9 +94,10 @@ export async function getPostDataById(id: string): Promise<PostData | null> {
       htmlContent: htmlContent
     }
 
+
     return data;
   } catch (error) {
-    console.error("文件读取或者解析出错！:>> ", error);
+    console.error(`文件《${id}》读取或者解析出错！:>> `, error);
 
     return null;
   }
