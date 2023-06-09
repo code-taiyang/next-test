@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-  console.log('SKIP_BUILD_DYNAMIC_ROUTE :>> ', process.env.SKIP_BUILD_DYNAMIC_ROUTE);
+  console.log(`当前环境是否跳过动态路由编译 :>> ${process.env.SKIP_BUILD_DYNAMIC_ROUTE}`);
   const postList = getPostList();
   // const paths = postList.map((id) => ({ params: {id} }));
   const paths = postList.slice(0, 1).map((id) => ({ params: {id} }));
