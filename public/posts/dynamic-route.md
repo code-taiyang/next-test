@@ -1,8 +1,8 @@
 ---
 author: taiyang
 title: dynamic-route
-createTime: 2023/5/25
-updateTime: 2023/5/25
+createTime: 1686793011396
+updateTime: 1686793011396
 ---
 
 # dynamic-route
