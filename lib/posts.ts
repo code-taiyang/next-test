@@ -6,7 +6,7 @@ import { remark } from 'remark';
 import html from 'remark-html';
 
 // 根目录 + posts博客文件目录
-const postDir = path.join(process.cwd(), "../public/posts");
+const postDir = path.join(process.cwd(), "/public/posts");
 
 interface PostMetaData {
   author?: string;
